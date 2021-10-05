@@ -1,5 +1,5 @@
 import { render } from "react-dom"
-import { observer } from "mobx-react-lite"
+import { observer, useObserver } from "mobx-react-lite"
 
 import "./styles/tw.css"
 import "./styles/main.scss"
@@ -59,16 +59,6 @@ const Main = observer(() => {
       <MainStoreContext.Provider value={mainStore}>
         <BaseView />
       </MainStoreContext.Provider>
-
-      {!sessionStore.loadComplete ? (
-        <>
-          <div className="flex flex-col items-center justify-center w-screen h-screen p-4 bg-black bg-opacity-90 fixed top-0 left-0 z-[100000]">
-            <div className="p-6 rounded-xl bg-white min-w-96">
-              Hi
-            </div>
-          </div>
-        </>
-      ) : (<></>)}
     </>
   )
 })

@@ -107,7 +107,7 @@ export function ExtendStore<
     return createContext(null)
   };
 
-  (t as any).prototype.__PRESERVED_KEYS = [...t.PRESERVED_KEYS];
+  (t as any).prototype.__PRESERVED_KEYS = [...(t.PRESERVED_KEYS || [])];
   (t as any).prototype.__STORE_NAME = t.STORE_NAME;
   (t as any).prototype.__STORE_VERSION = t.STORE_VERSION;
 
