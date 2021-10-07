@@ -1,6 +1,0 @@
-node_modules
-public/dist
-bundle-map.html
-bundle.size.json
-yarn-error.log
-yarn.lock

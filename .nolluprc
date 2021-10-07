@@ -1,7 +1,0 @@
-{
-  "port": 5000,
-  "contentBase": "public",
-  "headers": {
-    "Access-Control-Allow-Origin": "*"
-  }
-}
