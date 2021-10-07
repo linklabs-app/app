@@ -9,6 +9,7 @@ interface IButtonProps extends HTMLAttributes<HTMLAnchorElement> {
 
 const themes = {
   normal: "bg-gray-200 text-gray-700 hover:bg-gray-300",
+  full: "bg-gray-50 text-gray-700 hover:bg-gray-100",
   inverted: "bg-gray-700 text-white hover:bg-gray-800",
   primary: "bg-blue-500 text-white hover:bg-blue-600",
   danger: "bg-red-500 text-white hover:bg-red-600",
@@ -29,7 +30,7 @@ export default function Button(props: IButtonProps) {
     no-underline
     ${props.className || ""}
     `.replace(/\s+/g, " ")}>
-      {props.icon ? <SelectedIcon className="w-6 h-6 mr-2" /> : <></>}
+      {props.icon ? <SelectedIcon className={`w-6 h-6`} /> : <></>}
       {props.children}
     </a>
   )

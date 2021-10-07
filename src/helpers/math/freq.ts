@@ -11,3 +11,7 @@ export function calculateFresnelRadiusAt(frequency: number, distance: number, zo
 
   return r
 }
+
+export function calculateFreeSpacePathLoss(frequency: number, distance: number): number {
+  return 20 * Math.log10(4 * Math.PI * distance * frequency / C)
+}

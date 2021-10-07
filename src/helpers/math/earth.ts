@@ -4,7 +4,7 @@ import * as Trig from "./trig"
 
 const RADIUS = 6371000
 
-type LatLng = [number, number]
+export type LatLng = [number, number]
 type LatitudeLongitudeObject = {
   latitude: number,
   longitude: number
@@ -21,6 +21,12 @@ type LatLongObject = {
 type FnInputLatLng = LatLng | LatLngObject | LatLongObject | LatitudeLongitudeObject
 
 export const earthRadius = RADIUS
+
+export function getElevationURL(pos1: LatLng, pos2: LatLng): string {
+  const DATASET = "NASADEM"
+
+  return `https://api.elevationapi.com/api/Elevation/line/${pos1[0]},${pos1[1]}/${pos2[0]},${pos2[1]}?dataSet=${DATASET}`
+}
 
 export function toLatLng(x: FnInputLatLng): LatLng {
   if (
@@ -67,16 +73,18 @@ export function getCurvatureAt(curvedDistance: number, x = 0.5) {
 }
 
 type ElevationPoints = [number, number][]
-type ElevationData = {
-  points: ElevationPoints,
+interface LowestAndHighest {
   highest: number,
   lowest: number,
-  distanceFromApi: number
+}
+export interface ElevationData extends LowestAndHighest {
+  points: ElevationPoints,
+  distance: number
 }
 
 export async function getElevationLine(pos1: LatLng, pos2: LatLng): Promise<ElevationData> {
   try {
-    let response = await fetch(`https://api.elevationapi.com/api/Elevation/line/${pos1}/${pos2}?dataSet=NASADEM`)
+    let response = await fetch(getElevationURL(pos1, pos2))
     let data = await response.json()
 
     if (!data || !data.metrics) {
@@ -84,8 +92,8 @@ export async function getElevationLine(pos1: LatLng, pos2: LatLng): Promise<Elev
     }
 
     let parsedData = []
-    let lowest = 0
-    let highest = 0
+    let lowest = Infinity
+    let highest = -Infinity
 
     for (let i in data.geoPoints) {
       let point = data.geoPoints[i]
@@ -104,7 +112,7 @@ export async function getElevationLine(pos1: LatLng, pos2: LatLng): Promise<Elev
       points: parsedData as any,
       highest,
       lowest,
-      distanceFromApi: data.metrics.distance
+      distance: getDistance(pos1, pos2)
     }
   } catch {
     return null
@@ -131,4 +139,29 @@ export function getElevationOnPolygonAt(curvedDistance: number, points: Elevatio
   let elevationAt = getElevationAt(points, x)
 
   return earthCurvature + elevationAt
+}
+
+export function addCurvatureToLowestAndHighest(data: ElevationData): LowestAndHighest {
+  const getSpecificCurvatureAt = (x: number) => getCurvatureAt(data.distance, x)[1]
+
+  let lowest = Infinity
+  let highest = -Infinity
+
+  for (const i in data.points) {
+    const point = data.points[i]
+
+    const elevationAt = getSpecificCurvatureAt(point[0]) + point[1]
+
+    if (elevationAt > highest) {
+      highest = elevationAt
+    }
+    if (elevationAt < lowest) {
+      lowest = elevationAt
+    }
+  }
+
+  return {
+    lowest,
+    highest
+  }
 }

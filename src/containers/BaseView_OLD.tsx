@@ -277,8 +277,6 @@ export default observer(function BaseView() {
         </Marker>
       </MapContainer>
       <div className={`w-screen h-1/3 bg-gray-50 flex flex-row absolute z-20 transition shadow-2xl ${bottomControls ? "bottom-0" : "-bottom-1/3"}`} style={{ transitionProperty: "bottom" }}>
-        <div className="w-full flex flex-col max-w-xs flex-shrink-0">
-        </div>
         <div className="h-full relative">
           <div className="w-full h-full absolute top-0 left-0 flex flex-col">
             <div className="h-0.5 mt-6 w-full bg-gray-400 rounded-lg" />
