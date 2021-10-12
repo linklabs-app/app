@@ -2,8 +2,7 @@ import "leaflet/dist/leaflet.css"
 
 import * as SVG from "@svgdotjs/svg.js"
 import { useEffect, useRef, useState, forwardRef } from "react"
-import { addCurvatureToLowestAndHighest, ElevationData, getDistance, getElevationOnPolygonAt, getPolygonDistance } from "../helpers/math/earth"
-import { debounce } from "../helpers/debounce"
+import { addCurvatureToLowestAndHighest, ElevationData, getElevationOnPolygonAt } from "../helpers/math/earth"
 
 interface ISVGContainerProps {
   onMouseEnter?(ev: MouseEvent): any,
@@ -20,13 +19,13 @@ const SVGContainer = forwardRef((props: ISVGContainerProps, ref) => {
       width="100%"
       height="100%"
       ref={ref as any}
-      onMouseEnter={(ev) => {
+      onMouseEnter={() => {
 
       }}
-      onMouseLeave={(ev) => {
+      onMouseLeave={() => {
 
       }}
-      onMouseOver={(ev) => {
+      onMouseOver={() => {
 
       }} />
   )
@@ -64,8 +63,8 @@ export default function ElevationView(props: IElevationViewProps) {
     items.push([-1, clientHeight + 1])
     items.push([0, clientHeight - getScaledHeightAt(0, heightPerPixel)])
 
-    for (let i = 0; i <= clientWidth; i++) {
-      const progress = i / clientWidth
+    for (let i = 0; i <= clientWidth + 1; i++) {
+      const progress = Math.min(1, i / clientWidth)
       const heightAtPoint = getScaledHeightAt(progress, heightPerPixel)
 
       items.push([i, clientHeight - heightAtPoint])

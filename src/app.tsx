@@ -1,5 +1,5 @@
 import { render } from "react-dom"
-import { observer, useObserver } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 
 import "./styles/tw.css"
 import "./styles/main.scss"

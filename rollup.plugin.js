@@ -67,7 +67,13 @@ module.exports = {
     }),
     dev && devServer({
       dirs: ["public"],
-      port: 5000
+      port: 5000,
+      proxy: [
+        {
+          from: "/elevation_api",
+          to: "https://api.elevationapi.com"
+        }
+      ]
     })
   ].filter(Boolean),
 

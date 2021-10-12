@@ -25,7 +25,11 @@ export const earthRadius = RADIUS
 export function getElevationURL(pos1: LatLng, pos2: LatLng): string {
   const DATASET = "NASADEM"
 
-  return `https://api.elevationapi.com/api/Elevation/line/${pos1[0]},${pos1[1]}/${pos2[0]},${pos2[1]}?dataSet=${DATASET}`
+  const apiDest = process.env.NODE_ENV === "development"
+    ? "/elevation_api"
+    : "https://api.elevationapi.com"
+
+  return `${apiDest}/api/Elevation/line/${pos1[0]},${pos1[1]}/${pos2[0]},${pos2[1]}?dataSet=${DATASET}`
 }
 
 export function toLatLng(x: FnInputLatLng): LatLng {
@@ -54,9 +58,7 @@ export function getPolygonDistance(curvedDistance: number) {
 
   const xA = f * curvedDistance
 
-  const l = 2 * RADIUS * Trig.sin(xA / 2)
-
-  return l
+  return 2 * RADIUS * Trig.sin(xA / 2)
 }
 
 export function getCurvatureAt(curvedDistance: number, x = 0.5) {
