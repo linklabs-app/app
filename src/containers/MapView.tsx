@@ -1,7 +1,7 @@
 import "leaflet/dist/leaflet.css"
 
 import { ReactChild } from "react"
-import { MapContainer, TileLayer, useMap } from "react-leaflet"
+import { MapContainer, ScaleControl, TileLayer, useMap } from "react-leaflet"
 
 import { toLatLng } from "../helpers/math/earth"
 
@@ -34,7 +34,7 @@ function Consume(props: any) {
 
 export function MapView(props: IMapViewProps) {
   return (
-    <MapContainer center={props.pos} zoom={13} className="h-full w-full" attributionControl={false} zoomControl={false} style={{ cursor: "default" }}>
+    <MapContainer center={props.pos} zoom={14} className="h-3/4 w-full" attributionControl={false} zoomControl={false} style={{ cursor: "default" }}>
       <Consume onClick={props.onClick} onRightClick={props.onRightClick} />
       {props.mapType === "flat" ? (
         <TileLayer
@@ -47,6 +47,7 @@ export function MapView(props: IMapViewProps) {
         />
       ) : <></>}
       {props.children}
+      <ScaleControl metric={true} position="bottomleft" />
     </MapContainer>
   )
 }

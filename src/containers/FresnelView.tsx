@@ -13,19 +13,22 @@ const SVGContainer = forwardRef((props: any, ref) => {
   )
 })
 
-interface IElevationViewProps {
-  data: ElevationData,
-  scale: number
+interface IFresnelViewProps {
+  elevationData: ElevationData,
+  elevationScale: number,
+
+  distance: number,
+  
 }
 
-export default function ElevationView(props: IElevationViewProps) {
+export default function FresnelView(props: IFresnelViewProps) {
   let svgRef = useRef<SVGSVGElement>()
   let [svgElement] = useState(() => <SVGContainer ref={svgRef} />)
 
-  const scaledLowestAndHighest = props.data ? addCurvatureToLowestAndHighest(props.data) : null
+  const scaledLowestAndHighest = props.elevationData ? addCurvatureToLowestAndHighest(props.elevationData) : null
 
   function getScaledHeightAt(x: number, heightPerPixel: number) {
-    return (getElevationOnPolygonAt(props.data.distance, props.data.points, x) - scaledLowestAndHighest.lowest * 0.9) / heightPerPixel
+    return (getElevationOnPolygonAt(props.elevationData.distance, props.elevationData.points, x) - scaledLowestAndHighest.lowest * 0.9) / heightPerPixel
   }
 
   function setSvgContent() {
@@ -35,9 +38,9 @@ export default function ElevationView(props: IElevationViewProps) {
     const svgContext = new SVG.Container(svgRef.current)
     svgContext.clear()
 
-    if (!props.data) return
+    if (!props.elevationData) return
 
-    const heightPerPixel = props.data.highest / (clientHeight * props.scale)
+    const heightPerPixel = props.elevationData.highest / (clientHeight * props.elevationScale)
 
     const items = []
     items.push([-1, clientHeight + 1])
@@ -60,11 +63,11 @@ export default function ElevationView(props: IElevationViewProps) {
 
     window.addEventListener("resize", onResize)
     return () => window.removeEventListener("resize", onResize)
-  }, [props.data])
+  }, [props.elevationData])
 
   useEffect(() => {
     setSvgContent()
-  }, [props.scale, props.data])
+  }, [props.elevationScale, props.elevationData])
 
   return svgElement
 }

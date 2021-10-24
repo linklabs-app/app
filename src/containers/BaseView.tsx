@@ -26,8 +26,6 @@ export default function BaseView() {
     setPos1(pos1)
     setPos2(pos2)
 
-    console.log("moved")
-
     getElevationLine(pos1, pos2).then(setElevationData)
   }
 
@@ -48,11 +46,11 @@ export default function BaseView() {
         theme="full"
       />
       <div className="absolute bottom-0 left-0 w-screen z-20 bg-gray-50 h-1/4 shadow-2xl flex">
-        <div className="relative w-1/5 h-"></div>
+        <div className="relative min-w-[16rem] w-1/5 h-full"></div>
         <div className="relative w-full h-full border-l border-r border-current text-gray-300">
           <ElevationView data={elevationData} scale={1} />
         </div>
-        <div className="relative w-1/5 h-full"></div>
+        <div className="relative min-w-[16rem] w-1/5 h-full"></div>
       </div>
     </>
   )

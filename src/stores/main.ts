@@ -1,5 +1,4 @@
 import { ExtendStore, Tuple } from "./generic"
-import { APP_VERSION } from "../constants"
 
 const MainStore = ExtendStore(class {
   public static STORE_NAME = "main"
